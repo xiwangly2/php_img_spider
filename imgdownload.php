@@ -44,7 +44,7 @@ echo "{$filename}";
 if(file_exists("./images/{$filename}"))
 {
 	echo "<br>重复！";
-	@file_put_contents("./images/{$filename}",$img);
+	//@file_put_contents("./images/{$filename}",$img);
 }
 else
 {
