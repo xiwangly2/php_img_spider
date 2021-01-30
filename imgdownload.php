@@ -2,7 +2,10 @@
 $url = 'https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php';
 $img = @file_get_contents($url,true);
 $uuid = uniqid();
-@mkdir("images");
+if(!file_exists("images"))
+{
+	@mkdir("images");
+}
 @file_put_contents("{$uuid}imgdata.bin",$img);
 $info = @getimagesize("{$uuid}imgdata.bin");
 $md5 = @md5_file("{$uuid}imgdata.bin");
