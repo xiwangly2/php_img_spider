@@ -1,14 +1,18 @@
 <?php
 $url = 'https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php';
-$img = @file_get_contents($url,true);
+$img = @file_get_contents($url);
 $uuid = uniqid();
 if(!file_exists("images"))
 {
 	@mkdir("images");
 }
-@file_put_contents("{$uuid}imgdata.bin",$img);
-$info = @getimagesize("{$uuid}imgdata.bin");
-$md5 = @md5_file("{$uuid}imgdata.bin");
+if(!file_exists("imagestemp"))
+{
+	@mkdir("imagetemp");
+}
+@file_put_contents("./imagetemp/{$uuid}imgdata.bin",$img);
+$info = @getimagesize("./imagetemp/{$uuid}imgdata.bin");
+$md5 = @md5_file("./imagetemp/{$uuid}imgdata.bin");
 $mime = $info["mime"];
 if($mime == "image/png")
 {
@@ -43,15 +47,15 @@ else
 	$filetype = ".bin";
 }
 $filename = "{$md5}{$filetype}";
-echo "{$filename}";
+echo("{$filename}");
 if(file_exists("./images/{$filename}"))
 {
-	echo "<br>重复！";
-	//@file_put_contents("./images/{$filename}",$img);
+	echo("<br/>重复！");
+	@file_put_contents("./images/{$filename}",$img);
 }
 else
 {
 	@file_put_contents("./images/{$filename}",$img);
 }
-@unlink("{$uuid}imgdata.bin");
+@unlink("./imagetemp/{$uuid}imgdata.bin");
 ?>
