@@ -1,8 +1,8 @@
 <?php
 $url = 'https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php';
-$img = @file_get_contents($url,true);
-$info = @getimagesize($img);
-$md5 = @md5($img);
+$info = @getimagesize($url);
+$md5 = @md5_file($url);
+$img = @file_get_contents($url);
 $mime = $info["mime"];
 if($mime == "image/png")
 {
@@ -34,18 +34,12 @@ elseif($mime == "image/bmp")
 }
 else
 {
-	$filetype = ".png";
+	$filetype = ".bin";
 }
 $filename = "{$md5}";
 $file_name = "{$filename}{$filetype}";
-echo "{$file_name}";
-if(file_exists("./images/{$file_name}"))
-{
-	echo "<br>重复！";
-	@file_put_contents("./images/{$file_name}",$img);
-}
-else
-{
-	@file_put_contents("./images/{$file_name}",$img);
-}
+header("Content-type:application/octet-stream");
+header("Accept-Ranges:bytes");
+header("Content-Disposition: attachment;filename={$file_name}");
+echo $img;
 ?>
